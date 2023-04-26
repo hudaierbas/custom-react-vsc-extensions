@@ -16,16 +16,16 @@ export function activate(context: vscode.ExtensionContext) {
         // Get the word within the selection
         const defaultImports = document.getText(selection).split(';');
 
-        let lazyImport = "import { lazy } from 'react';\n";
+        let lazyImport =
+          "import lazyWithPreload from '../utils/lazyWithPreload';\n";
 
         defaultImports.forEach((e) => {
           const di = e.split(' ');
 
           if (di.length > 0 && di[0].includes('import'))
-            lazyImport += `const ${di[1]} = lazy(() => import(${di[3].replace(
-              ';',
-              ''
-            )}));\n`;
+            lazyImport += `const ${
+              di[1]
+            } = lazyWithPreload(() => import(${di[3].replace(';', '')}));\n`;
         });
 
         editor.edit((editBuilder) => {
